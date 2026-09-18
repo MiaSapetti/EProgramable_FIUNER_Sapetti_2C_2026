@@ -7,13 +7,15 @@
  * Medición de distancia utilizando un sensor ultrasónico HC-SR04, visualización 
  * de la lectura en un display LCD BCD y representación del rango mediante LEDs, 
  * gestionado a través de timers e interrupciones de teclas en FreeRTOS.
- * 
+ * Transmite la información hacia la PC vía Puerto Serie (UART_PC) y permite el
+ * control remoto mediante comandos serie ('O', 'H', 'I', 'M', 'F', 'S').
  * 
  * @section changelog Historial de Cambios
  *
  * |    Fecha   | Descripción                                           |
  * |:----------:|:------------------------------------------------------|
- * | 17/09/2026 | Integración de timers e interrupciones de teclas      |
+ * | 17/09/2026 | Integración de UART, cambio de unidades y control     |
+ * |            | de velocidad/máximo.                                  |
  *
  * @author Mia Sapetti (mia.sapetti@ingenieria.uner.edu.ar)
  */
@@ -35,7 +37,7 @@
 
 /**
  * @def CONFIG_BLINK_PERIOD_Medir_US
- * @brief Período de disparo del Timer A para la tarea de medición (en microsegundos).
+ * @brief Período inicial de disparo del Timer A para la tarea de medición (en microsegundos).
  */
 #define CONFIG_BLINK_PERIOD_Medir_US 1000000 
 
@@ -45,6 +47,24 @@
  */
 #define CONFIG_BLINK_PERIOD_Mostrar_US 1000000
 
+/**
+ * @def PERIOD_MIN_MEDIR_US
+ * @brief Límite mínimo para el período del Timer A (100 ms).
+ */
+#define PERIOD_MIN_MEDIR_US  100000  
+
+/**
+ * @def PERIOD_MAX_MEDIR_US
+ * @brief Límite máximo para el período del Timer A (3 s).
+ */
+#define PERIOD_MAX_MEDIR_US  3000000 
+
+/**
+ * @def STEP_PERIOD_US
+ * @brief Paso de ajuste para el período del Timer A al cambiar la velocidad (100 ms).
+ */
+#define STEP_PERIOD_US        100000  
+
 /*==================[internal data definition]===============================*/
 
 /**
@@ -53,12 +73,12 @@
 TaskHandle_t Medir_task_handle   = NULL;
 
 /**
- * @brief Handle de la tarea encargada de la visualización en LEDs y display LCD.
+ * @brief Handle de la tarea encargada de la visualización en LEDs, display LCD y Puerto Serie.
  */
-TaskHandle_t Mostrar_task_handle   = NULL;
+TaskHandle_t Mostrar_task_handle = NULL;
 
 /**
- * @brief Variable global que almacena el valor actual de la distancia medida en centímetros.
+ * @brief Variable global que almacena el valor actual de la distancia medida.
  */
 uint16_t distancia     = 0;
 
@@ -81,7 +101,32 @@ bool on   = true;
  */
 bool hold = false;
 
+/**
+ * @brief Flag global para seleccionar la unidad de medida.
+ *        - `true`: Centímetros ("cm").
+ *        - `false`: Pulgadas ("inch").
+ */
+bool unidades_cm = true;
+
+/**
+ * @brief Variable global que almacena el valor máximo registrado durante la sesión.
+ */
+uint16_t max_distancia = 0;
+
+/**
+ * @brief Flag global para alternar la visualización del valor máximo en pantalla.
+ *        - `true`: Mantiene en pantalla el valor máximo alcanzado.
+ *        - `false`: Muestra la medición actual.
+ */
+bool modo_maximo = false;
+
+/**
+ * @brief Variable global que almacena el período actual de la tarea de medición (en us).
+ */
+uint32_t periodo_medir_us = 1000000;
+
 /*==================[internal functions declaration]=========================*/
+
 /**
  * @brief Rutina de servicio de interrupción (ISR) invocada por el Timer A.
  * 
@@ -104,13 +149,24 @@ void FuncTimerB(void* param){
     vTaskNotifyGiveFromISR(Mostrar_task_handle, pdFALSE);
 }
 
-// Envia y recibe datos por el puerto serie UART_PC. 
-// Se ejecuta en contexto de interrupción que avisa cuando hay un dato disponible para leer. 
-// Lee el dato y lo reenvia al puerto serie (eco) y actualiza los flags on y hold segun la tecla presionada.
+/**
+ * @brief Callback de interrupción del Puerto Serie (UART_PC).
+ * 
+ * Se ejecuta al recibir un dato por el puerto serie. Realiza un eco del caracter recibido
+ * y procesa los siguientes comandos:
+ * - 'O' / 'o': Alterna el estado de encendido (@ref on).
+ * - 'H' / 'h': Alterna el estado de retención (@ref hold).
+ * - 'I' / 'i': Alterna la unidad de medida (@ref unidades_cm).
+ * - 'M' / 'm': Alterna la visualización del valor máximo (@ref modo_maximo).
+ * - 'F' / 'f': Incrementa la velocidad de lectura disminuyendo el período del Timer A.
+ * - 'S' / 's': Reduce la velocidad de lectura aumentando el período del Timer A.
+ * 
+ * @param[in] param Puntero genérico a parámetros de interrupción (no utilizado).
+ */
 void FuncUART(void* param){ 
     uint8_t tecla;
     UartReadByte(UART_PC, &tecla);
-    UartSendByte(UART_PC, (char *) &tecla); // Eco de la tecla presionada, confirma que llego el dato 
+    UartSendByte(UART_PC, (char *) &tecla); 
 
     if(tecla == 'O' || tecla == 'o'){
         on = !on;
@@ -118,20 +174,40 @@ void FuncUART(void* param){
     else if(tecla == 'H' || tecla == 'h'){
         hold = !hold;
     }
+    else if(tecla == 'I' || tecla == 'i'){ 
+        unidades_cm = !unidades_cm;
+    }
+    else if(tecla == 'M' || tecla == 'm'){ 
+        modo_maximo = !modo_maximo;
+    }
+    else if(tecla == 'F' || tecla == 'f'){
+        if(periodo_medir_us > PERIOD_MIN_MEDIR_US){
+            periodo_medir_us -= STEP_PERIOD_US;
+            TimerUpdatePeriod(TIMER_A, periodo_medir_us);
+            UartSendString(UART_PC, "Velocidad aumentada\r\n");
+        }
+    }
+    else if(tecla == 'S' || tecla == 's'){
+        if(periodo_medir_us < PERIOD_MAX_MEDIR_US){
+            periodo_medir_us += STEP_PERIOD_US;
+            TimerUpdatePeriod(TIMER_A, periodo_medir_us);
+            UartSendString(UART_PC, "Velocidad disminuida\r\n");
+        }
+    }
 }
 
 /**
- * @brief Tarea de FreeRTOS encargada del control de LEDs y la actualización del display BCD.
+ * @brief Tarea de FreeRTOS encargada del control de LEDs, display BCD y transmisión UART.
  * 
- * Permanece bloqueada esperando la notificación enviada por la ISR del Timer B.
- * Si @ref on es `true`, enciende los LEDs según la distancia medida y actualiza
- * el display BCD (respetando la condición de congelamiento de @ref hold). 
+ * Espera la notificación de la ISR del Timer B. Si el sistema está encendido (@ref on),
+ * enciende los LEDs según la distancia, gestiona la selección del dato a mostrar
+ * (respetando @ref modo_maximo y @ref hold), actualiza el display BCD y transmite
+ * la información formateada a la PC a través de UART_PC.
  * Si @ref on es `false`, apaga el display y todos los LEDs.
  * 
  * @param[in] pvParameter Puntero a parámetros de tarea (no utilizado).
  */
 static void MostrarTask(void *pvParameter){
-    // Inicialización del LCD dentro de la tarea
     LcdItsE0803Init();
 
     while(true){
@@ -156,23 +232,31 @@ static void MostrarTask(void *pvParameter){
                 LedOn(LED_3);
             }
 
-            // 2. CONTROL DEL DISPLAY BCD (Retiene valor si 'hold' es true)
-            if(!hold){
+            // 2. CONTROL DEL DISPLAY BCD Y VARIABLE A MOSTRAR
+            if(modo_maximo){
+                distancia_lcd = max_distancia;
+            }
+            else if(!hold){ 
                 distancia_lcd = distancia;
             }
 
-            // Muestra directamente el entero (0 a 999) en el display
             LcdItsE0803Write(distancia_lcd);
 
-			// 3. ENVÍO VÍA PUERTO SERIE (Formato: 3 dígitos ASCII + espacio + cm + \r\n)
+            // 3. ENVÍO VÍA PUERTO SERIE
+            if (modo_maximo) {
+                UartSendString(UART_PC, "MAX: ");
+            }
 
-            // a. Envío el entero convertido a texto (ej: "25" o "120") con base 10 (decimal)
             UartSendString(UART_PC, (char *)UartItoa(distancia_lcd, 10));
-            // b. Envío el espacio y la unidad "cm" el salto de línea terminando la trama
-            UartSendString(UART_PC, " cm\r\n");
+
+            if(unidades_cm){
+                UartSendString(UART_PC, " cm\r\n");
+            } 
+            else {
+                UartSendString(UART_PC, " inch\r\n");
+            }
         }
         else {
-            // Si 'on' es false, apaga el display y los LEDs
             LcdItsE0803Off();
             LedsOffAll();
         }
@@ -180,22 +264,31 @@ static void MostrarTask(void *pvParameter){
 }
 
 /**
- * @brief Tarea de FreeRTOS encargada de la medición periódica de distancia con el sensor ultrasónico HC-SR04.
+ * @brief Tarea de FreeRTOS encargada de la medición periódica de distancia con el sensor HC-SR04.
  * 
- * Permanece bloqueada esperando la notificación enviada por la ISR del Timer A.
- * Si el flag global @ref on está activo (`true`), realiza la lectura de distancia en centímetros y actualiza
- * la variable global @ref distancia. Si está inactivo (`false`), resetea el valor a `0`.
+ * Espera la notificación de la ISR del Timer A. Si @ref on es `true`, realiza la medición
+ * en la unidad activa (@ref unidades_cm), actualiza la variable @ref distancia y mantiene
+ * el registro de @ref max_distancia. Si está inactivo (`false`), resetea la distancia a `0`.
  * 
  * @param[in] pvParameter Puntero a parámetros pasados a la tarea (no utilizado).
  */
 static void MedirTask(void *pvParameter){
-    // Inicialización del sensor HC-SR04 dentro de la tarea
     HcSr04Init(GPIO_3, GPIO_2); 
 
     while(true){
         ulTaskNotifyTake(pdTRUE, portMAX_DELAY); 
         if(on){
-            distancia = HcSr04ReadDistanceInCentimeters();
+            if(unidades_cm){ 
+                distancia = HcSr04ReadDistanceInCentimeters();
+            }
+            else{
+                distancia = HcSr04ReadDistanceInInches();
+                UartSendString(UART_PC, " Pulgadas: ");
+            }
+
+            if(distancia > max_distancia){
+                max_distancia = distancia;
+            }
         } 
         else {
             distancia = 0;
@@ -230,16 +323,14 @@ static void cambio_hold(void *pvParameter){
 /**
  * @brief Función principal de la aplicación (`main`).
  * 
- * Inicializa los periféricos de la placa, configura e inicia los timers de hardware,
- * establece los handlers de interrupción para los switches y crea las tareas FreeRTOS
- * (`MedirTask` y `MostrarTask`).
+ * Inicializa los periféricos, configura e inicia la UART_PC a 115200 baudios,
+ * configura e inicia los timers de hardware, asocia las interrupciones para las
+ * teclas físicas y crea las tareas de FreeRTOS (`MedirTask` y `MostrarTask`).
  */
 void app_main(void){
-    // Inicialización de periféricos de la placa
     LedsInit();
     SwitchesInit();
 
-	// Configuración del Puerto Serie UART_PC
     serial_config_t my_uart = {
         .port      = UART_PC,
         .baud_rate = 115200,
@@ -248,10 +339,9 @@ void app_main(void){
     };
     UartInit(&my_uart);
 
-    /* Inicialización de timers */
     timer_config_t timer_Medir = {
         .timer   = TIMER_A,
-        .period  = CONFIG_BLINK_PERIOD_Medir_US,
+        .period  = periodo_medir_us,
         .func_p  = FuncTimerA,
         .param_p = NULL
     };
@@ -265,19 +355,15 @@ void app_main(void){
     };
     TimerInit(&timer_Mostrar);
 
-    // Inicialización del sensor y display
     HcSr04Init(GPIO_3, GPIO_2); 
     LcdItsE0803Init();
 
-    // Creación de tareas
     xTaskCreate(&MedirTask, "Medir", 2048, NULL, 5, &Medir_task_handle);
     xTaskCreate(&MostrarTask, "Mostrar", 2048, NULL, 5, &Mostrar_task_handle);
     
-    /* Inicialización del conteo de timers */
     TimerStart(timer_Medir.timer);
     TimerStart(timer_Mostrar.timer);
 
-    // Configuración de Interrupciones para las Teclas fisicas
     SwitchActivInt(SWITCH_1, cambio_on, NULL);
     SwitchActivInt(SWITCH_2, cambio_hold, NULL);
 }
