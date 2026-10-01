@@ -1,28 +1,29 @@
-/*! @mainpage Template
+/**
+ * @file guia2_act4.c
+ * @mainpage Conversión Digital-Analógica (ECG) y Conversión Analógica-Digital enviada por UART.
  *
- * @section genDesc General Description
+ * Este programa genera una señal analógica de ECG a través del periférico DAC leyendo 
+ * un vector digital en memoria, y simultáneamente realiza lecturas analógicas periódicas 
+ * mediante el ADC (canal CH1) enviando el resultado vía UART para ser visualizado en un osciloscopio o terminal serie.
  *
- * This section describes how the program works.
+ * @section hardConn Conexión de Hardware
  *
- * <a href="https://drive.google.com/...">Operation Example</a>
+ * | Periférico | ESP32 / EDU-CIAA |
+ * |:----------:|:-----------------|
+ * |  Salida DAC | Terminal A del potenciómetro |
+ * |  Entrada AD | CH1 (Cursor/Centro del potenciómetro) |
+ * |  GND        | Terminal B del potenciómetro |
+ * |  UART PC    | USB / Serial |
  *
- * @section hardConn Hardware Connection
+ * @section changelog Historial de Cambios
  *
- * |    Peripheral  |   ESP32   	|
- * |:--------------:|:--------------|
- * | 	PIN_X	 	| 	GPIO_X		|
+ * | Fecha      | Descripción |
+ * |:----------:|:------------|
+ * | 24/09/2026 | Creación del documento |
+ * | 01/10/2026 | Documentación Doxygen y adaptación para prueba con ECG |
  *
- *
- * @section changelog Changelog
- *
- * |   Date	    | Description                                    |
- * |:----------:|:-----------------------------------------------|
- * | 12/09/2023 | Document creation		                         |
- *
- * @author Albano Peñalva (albano.penalva@uner.edu.ar)
- *
+ * @author Mia Sapetti (mia.sapetti@ingenieria.uner.edu.ar)
  */
-
 /*==================[inclusions]=============================================*/
 #include <stdio.h>
 #include <stdint.h>
@@ -37,25 +38,42 @@
 #include "uart_mcu.h"
 #include "analog_io_mcu.h"
 /*==================[macros and definitions]=================================*/
+/** @brief Período del temporizador para la tarea conversora ADC (2000 us -> Frecuencia 500 Hz) */
 #define CONFIG_BLINK_PERIOD_ADC_US 2000 //periodo de muestreo de 2ms para frecuencia de 500 Hz, para el timer de la tarea conversora
+/** @brief Período del temporizador para la tarea conversora y salida DAC (4000 us -> Frecuencia 250 Hz) */
 #define CONFIG_PERIOD_DAC_US       4000 // Salida DAC (frecuencia sugerida para ECG 250 Hz, mitad que la de muestreo)
-
+/** @brief Tamaños del buffer de muestras de la señal ECG */
 #define BUFFER_SIZE 231
 
 /*==================[internal data definition]===============================*/
-TaskHandle_t Conversor_AD_task_handle   = NULL;
-TaskHandle_t Conversor_DA_task_handle   = NULL;
+/** @brief Handle de la tarea encargada de la conversión analógico-digital */
+TaskHandle_t Conversor_AD_task_handle = NULL;
 
+/** @brief Handle de la tarea encargada de la conversión digital-analógica */
+TaskHandle_t Conversor_DA_task_handle = NULL;
+
+/** @brief Handle de la tarea principal */
+TaskHandle_t main_task_handle = NULL;
 /*==================[internal functions declaration]=========================*/
+/**
+ * @brief Función de interrupción asociada al Timer A para notificar a la tarea de conversión ADC.
+ * @param param Parámetro genérico (sin uso).
+ */
 void FuncTimerA(void* param){
     vTaskNotifyGiveFromISR(Conversor_AD_task_handle, pdFALSE);
 }
 
+/**
+ * @brief Función de interrupción asociada al Timer B para notificar a la tarea de conversión DAC.
+ * @param param Parámetro genérico (sin uso).
+ */
 void FuncTimerB(void* param){
     vTaskNotifyGiveFromISR(Conversor_DA_task_handle, pdFALSE);
 }
-TaskHandle_t main_task_handle = NULL;
 
+/**
+ * @brief Buffer digital con los puntos de muestra de un ciclo de la señal de ECG.
+ */
 const char ecg[BUFFER_SIZE] = {
     76, 77, 78, 77, 79, 86, 81, 76, 84, 93, 85, 80,
     89, 95, 89, 85, 93, 98, 94, 88, 98, 105, 96, 91,
@@ -76,6 +94,10 @@ const char ecg[BUFFER_SIZE] = {
     74, 67, 71, 78, 72, 67, 73, 81, 77, 71, 75, 84, 79, 77, 77, 76, 76,
 };
 
+/**
+ * @brief Tarea encargada de enviar progresivamente cada muestra del buffer ECG al convertidor Digital-Analógico (DAC).
+ * @param pvParameter Parámetro de tarea de FreeRTOS (no utilizado).
+ */
 // Tarea 1: Genera la señal analógica de ECG enviando datos al DAC
 static void ConversorDATask(void *pvParameter){
     uint8_t i = 0;
@@ -92,6 +114,10 @@ static void ConversorDATask(void *pvParameter){
     }
 }
 
+/**
+ * @brief Tarea encargada de leer el canal analógico CH1 y transmitir la medición vía UART hacia la PC.
+ * @param pvParameter Parámetro de tarea de FreeRTOS (no utilizado).
+ */
 static void ConversorADTask(void *pvParameter){
     uint16_t valor_analogico = 0; //valor convertido por el ADC, se actualiza en la ISR del timer de la tarea conversora
 
@@ -109,9 +135,12 @@ static void ConversorADTask(void *pvParameter){
 }
 
 /*==================[external functions definition]==========================*/
+/**
+ * @brief Función principal de entrada de la aplicación.
+ */
 void app_main(void){
     // 1. Inicialización de la UART
-	 serial_config_t my_uart = {
+    serial_config_t my_uart = {
         .port      = UART_PC,
         .baud_rate = 115200,
         .func_p    = NULL,
@@ -119,40 +148,42 @@ void app_main(void){
     };
     UartInit(&my_uart);
 
-	// 2. Inicialización de la Entrada Analógica CH1
-	analog_input_config_t conv_AD = {
-		.input = CH1,
-		.mode  = ADC_SINGLE,
-		.func_p = NULL,
-		.param_p = NULL,
-	};
+    // 2. Inicialización de la Entrada Analógica CH1
+    analog_input_config_t conv_AD = {
+        .input   = CH1,
+        .mode    = ADC_SINGLE,
+        .func_p  = NULL,
+        .param_p = NULL,
+    };
     AnalogInputInit(&conv_AD);
 
-	AnalogOutputInit();
+    // 3. Inicialización de la Salida Analógica (DAC)
+    AnalogOutputInit();
 
-	timer_config_t timer_ConversorDA = {
-		.timer   = TIMER_B,
-		.period  = CONFIG_PERIOD_DAC_US,
-		.func_p  = FuncTimerB,
-		.param_p = NULL
-	};
-	TimerInit(&timer_ConversorDA);
+    // 4. Configuración del Timer B para la generación DAC
+    timer_config_t timer_ConversorDA = {
+        .timer   = TIMER_B,
+        .period  = CONFIG_PERIOD_DAC_US,
+        .func_p  = FuncTimerB,
+        .param_p = NULL
+    };
+    TimerInit(&timer_ConversorDA);
 
-	// 3. Inicialización del Timer A a 500 Hz (2000 us)
-	timer_config_t timer_ConversorAD = {
-		.timer   = TIMER_A,
-		.period  = CONFIG_BLINK_PERIOD_ADC_US,
-		.func_p  = FuncTimerA,
-		.param_p = NULL
-	};
-	TimerInit(&timer_ConversorAD);
+    // 5. Configuración del Timer A para el muestreo ADC
+    timer_config_t timer_ConversorAD = {
+        .timer   = TIMER_A,
+        .period  = CONFIG_BLINK_PERIOD_ADC_US,
+        .func_p  = FuncTimerA,
+        .param_p = NULL
+    };
+    TimerInit(&timer_ConversorAD);
 
-	// 4. Creación de la tarea
-	xTaskCreate(&ConversorADTask, "ConversorAD",4096, NULL, 5, &Conversor_AD_task_handle);
-	xTaskCreate(&ConversorDATask, "ConversorDAC",4096, NULL, 5, &Conversor_DA_task_handle);
+    // 6. Creación de las tareas de FreeRTOS
+    xTaskCreate(&ConversorADTask, "ConversorAD", 4096, NULL, 5, &Conversor_AD_task_handle);
+    xTaskCreate(&ConversorDATask, "ConversorDAC", 4096, NULL, 5, &Conversor_DA_task_handle);
 
-    // 5. Iniciar Timer
-	TimerStart(timer_ConversorAD.timer);
-	TimerStart(timer_ConversorDA.timer);
+    // 7. Inicio de los temporizadores
+    TimerStart(timer_ConversorAD.timer);
+    TimerStart(timer_ConversorDA.timer);
 }
 /*==================[end of file]============================================*/
