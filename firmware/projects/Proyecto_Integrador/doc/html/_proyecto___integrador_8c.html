@@ -1,0 +1,636 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.17.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Proyecto Integrador: Referencia del archivo C:/EP_MS_2C_2026/Repositorios/EProgramable_FIUNER_Sapetti_2C_2026/firmware/projects/Proyecto_Integrador/main/Proyecto_Integrador.c</title>
+<link rel="icon" href="icon.ico" type="image/x-icon" />
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="codefolding.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', init_search);
+</script>
+<script type="module">
+import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+const theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'default';
+mermaid.initialize({ startOnLoad: true, theme: theme });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectlogo"><img alt="Logo" src="fiuner.png"/></td>
+  <td id="projectalign">
+   <div id="projectname">Proyecto Integrador<span id="projectnumber">&#160;1.0</span>
+   </div>
+  </td>
+    <td>        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <span id="MSearchSelect" class="search-icon" onmouseover="return searchBox.OnSearchSelectShow()" onmouseout="return searchBox.OnSearchSelectHide()"><span class="search-icon-dropdown"></span></span>
+          <input type="text" id="MSearchField" value="" placeholder="Buscar" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><div id="MSearchCloseImg" class="close-icon"></div></a>
+          </span>
+        </div>
+</td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generado por Doxygen 1.17.0 -->
+<script type="text/javascript">
+let searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', codefold.init);
+</script>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded',() => { initNavTree('_proyecto___integrador_8c.html','',''); });
+</script>
+<div id="container">
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Cargando...</div>
+<div class="SRStatus" id="Searching">Buscando...</div>
+<div class="SRStatus" id="NoMatches">Nada coincide</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">Referencia del archivo Proyecto_Integrador.c</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="textblock"><code>#include &lt;stdio.h&gt;</code><br />
+<code>#include &lt;stdint.h&gt;</code><br />
+<code>#include &lt;stdbool.h&gt;</code><br />
+<code>#include &quot;freertos/FreeRTOS.h&quot;</code><br />
+<code>#include &quot;freertos/task.h&quot;</code><br />
+<code>#include &lt;string.h&gt;</code><br />
+<code>#include &lt;math.h&gt;</code><br />
+<code>#include &quot;<a class="el" href="led_8h_source.html">led.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="switch_8h_source.html">switch.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="buzzer_8h_source.html">buzzer.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="ble__mcu_8h_source.html">ble_mcu.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="uart__mcu_8h_source.html">uart_mcu.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="delay__mcu_8h_source.html">delay_mcu.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="timer__mcu_8h_source.html">timer_mcu.h</a>&quot;</code><br />
+<code>#include &quot;esp_log.h&quot;</code><br />
+<code>#include &quot;ADXL335.h&quot;</code><br />
+<code>#include &quot;fft.h&quot;</code><br />
+<code>#include &quot;iir_filter.h&quot;</code><br />
+</div>
+<p><a href="_proyecto___integrador_8c_source.html">Ir al código fuente de este archivo.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-define-members" class="groupheader"><a id="define-members" name="define-members"></a>
+defines</h2></td></tr>
+<tr class="memitem:a3df1b4cad09974bfc68858fad7cdc054" id="r_a3df1b4cad09974bfc68858fad7cdc054"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a3df1b4cad09974bfc68858fad7cdc054">CONFIG_BLINK_PERIOD</a>&#160;&#160;&#160;500</td></tr>
+<tr class="memdesc:a3df1b4cad09974bfc68858fad7cdc054"><td class="mdescLeft">&#160;</td><td class="mdescRight">Período de parpadeo de configuración por defecto (ms).  <br /></td></tr>
+<tr class="memitem:a6b20d41d6252e9871430c242cb1a56e7" id="r_a6b20d41d6252e9871430c242cb1a56e7"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a6b20d41d6252e9871430c242cb1a56e7">BUFFER_SIZE</a>&#160;&#160;&#160;128</td></tr>
+<tr class="memdesc:a6b20d41d6252e9871430c242cb1a56e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cantidad de muestras del buffer para el procesamiento FFT (Potencia de 2).  <br /></td></tr>
+<tr class="memitem:a7603ae0d99a6ca049bf7df3e6e5317b4" id="r_a7603ae0d99a6ca049bf7df3e6e5317b4"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a7603ae0d99a6ca049bf7df3e6e5317b4">SAMPLE_FREC</a>&#160;&#160;&#160;100</td></tr>
+<tr class="memdesc:a7603ae0d99a6ca049bf7df3e6e5317b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frecuencia de muestreo de la señal de aceleración (Hz).  <br /></td></tr>
+<tr class="memitem:a5358fe5e90461a722dc652a2e3d993e4" id="r_a5358fe5e90461a722dc652a2e3d993e4"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a5358fe5e90461a722dc652a2e3d993e4">CONFIG_BLINK_PERIOD_Adquisicion_US</a>&#160;&#160;&#160;10000</td></tr>
+<tr class="memdesc:a5358fe5e90461a722dc652a2e3d993e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Período de muestreo en microsegundos (10000 us = 10 ms -&gt; 100 Hz).  <br /></td></tr>
+<tr class="memitem:ad6eafdce98e6736dc6ea562414bc7535" id="r_ad6eafdce98e6736dc6ea562414bc7535"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#ad6eafdce98e6736dc6ea562414bc7535">GRAVEDAD_MS2</a>&#160;&#160;&#160;9.80665f</td></tr>
+<tr class="memdesc:ad6eafdce98e6736dc6ea562414bc7535"><td class="mdescLeft">&#160;</td><td class="mdescRight">Valor constante de aceleración de la gravedad ($m/s^2$).  <br /></td></tr>
+<tr class="memitem:aad3347834aa9050def92c866bc33a699" id="r_aad3347834aa9050def92c866bc33a699"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#aad3347834aa9050def92c866bc33a699">TIEMPO_PRUEBA_ESTATICA_MS</a>&#160;&#160;&#160;10000</td></tr>
+<tr class="memdesc:aad3347834aa9050def92c866bc33a699"><td class="mdescLeft">&#160;</td><td class="mdescRight">Duración total de la prueba estática en milisegundos (10 segundos).  <br /></td></tr>
+<tr class="memitem:a28c09654e548772ed5e9207c40f2ea0c" id="r_a28c09654e548772ed5e9207c40f2ea0c"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a28c09654e548772ed5e9207c40f2ea0c">BIN_ENVIO_MAX</a>&#160;&#160;&#160;32</td></tr>
+<tr class="memdesc:a28c09654e548772ed5e9207c40f2ea0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bin máximo de envío FFT (bin 32 correspondiente a 25.0 Hz).  <br /></td></tr>
+<tr class="memitem:ac09ef5ccee9d31400c53d5a2521984ca" id="r_ac09ef5ccee9d31400c53d5a2521984ca"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#ac09ef5ccee9d31400c53d5a2521984ca">PAUSA_ENVIO_MS</a>&#160;&#160;&#160;25</td></tr>
+<tr class="memdesc:ac09ef5ccee9d31400c53d5a2521984ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pausa entre transmisiones de cadenas de texto por UART y BLE (ms).  <br /></td></tr>
+<tr class="memitem:a57070ee080a5f899b711059c81633385" id="r_a57070ee080a5f899b711059c81633385"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a57070ee080a5f899b711059c81633385">UMBRAL_RMS_TEMBLOR</a>&#160;&#160;&#160;0.30f</td></tr>
+<tr class="memdesc:a57070ee080a5f899b711059c81633385"><td class="mdescLeft">&#160;</td><td class="mdescRight">Umbral RMS mínimo de aceleración para clasificar la presencia de temblor ($m/s^2$).  <br /></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-enum-members" class="groupheader"><a id="enum-members" name="enum-members"></a>
+Enumeraciones</h2></td></tr>
+<tr class="memitem:aca7d0d43e577e0bc70ae40044f73d6dc" id="r_aca7d0d43e577e0bc70ae40044f73d6dc"><td class="memItemLeft">enum &#160;</td><td class="memItemRight"><a class="el" href="#aca7d0d43e577e0bc70ae40044f73d6dc">estado_prueba_t</a> { <a class="el" href="#aca7d0d43e577e0bc70ae40044f73d6dca2ab24b92f6d003212e1dd2c4676469e7">MODO_REPOSO</a>
+, <a class="el" href="#aca7d0d43e577e0bc70ae40044f73d6dcad6502c2482e19542103f9216f68d95b5">MODO_ESTATICO</a>
+, <a class="el" href="#aca7d0d43e577e0bc70ae40044f73d6dca66c21cf0c64963c23fb31e26109c85d6">MODO_DINAMICO</a>
+ }</td></tr>
+<tr class="memdesc:aca7d0d43e577e0bc70ae40044f73d6dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enumeración de los estados posibles en la secuencia de evaluación.  <a href="#aca7d0d43e577e0bc70ae40044f73d6dc">Más...</a><br /></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
+Funciones</h2></td></tr>
+<tr class="memitem:afaccfed84cd1498a05ea04a65f1209b1" id="r_afaccfed84cd1498a05ea04a65f1209b1"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#afaccfed84cd1498a05ea04a65f1209b1">FuncTimerA</a> (void *param)</td></tr>
+<tr class="memdesc:afaccfed84cd1498a05ea04a65f1209b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback de temporizador ejecutado por la interrupción de Timer A.  <br /></td></tr>
+<tr class="memitem:a05a3af150289304855dd143f450f9645" id="r_a05a3af150289304855dd143f450f9645"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a05a3af150289304855dd143f450f9645">Tecla1_ISR</a> (void)</td></tr>
+<tr class="memdesc:a05a3af150289304855dd143f450f9645"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupción por hardware al presionar la Tecla 1 (Selecciona e Inicia Prueba Estática).  <br /></td></tr>
+<tr class="memitem:ab2fbce6622fb6b38694b94c3355eec5f" id="r_ab2fbce6622fb6b38694b94c3355eec5f"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#ab2fbce6622fb6b38694b94c3355eec5f">Tecla2_ISR</a> (void)</td></tr>
+<tr class="memdesc:ab2fbce6622fb6b38694b94c3355eec5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupción por hardware al presionar la Tecla 2 (Selecciona e Inicia Prueba Dinámica).  <br /></td></tr>
+<tr class="memitem:a630544a7f0a2cc40d8a7fefab7e2fe70" id="r_a630544a7f0a2cc40d8a7fefab7e2fe70"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a630544a7f0a2cc40d8a7fefab7e2fe70">app_main</a> (void)</td></tr>
+<tr class="memdesc:a630544a7f0a2cc40d8a7fefab7e2fe70"><td class="mdescLeft">&#160;</td><td class="mdescRight">Función principal del programa. Inicializa periféricos, filtros, tareas FreeRTOS y temporizador de adquisición.  <br /></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-var-members" class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:ad97bee9a35b98e0b6d3ba4a11cc21725" id="r_ad97bee9a35b98e0b6d3ba4a11cc21725"><td class="memItemLeft">TaskHandle_t&#160;</td><td class="memItemRight"><a class="el" href="#ad97bee9a35b98e0b6d3ba4a11cc21725">Adquisicion_task_handle</a> = NULL</td></tr>
+<tr class="memdesc:ad97bee9a35b98e0b6d3ba4a11cc21725"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle para la tarea FreeRTOS de adquisición de datos.  <br /></td></tr>
+<tr class="memitem:a17b236c52589445e8c28ae58c6699a0f" id="r_a17b236c52589445e8c28ae58c6699a0f"><td class="memItemLeft">TaskHandle_t&#160;</td><td class="memItemRight"><a class="el" href="#a17b236c52589445e8c28ae58c6699a0f">Procesamiento_task_handle</a> = NULL</td></tr>
+<tr class="memdesc:a17b236c52589445e8c28ae58c6699a0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle para la tarea FreeRTOS de procesamiento digital de señales.  <br /></td></tr>
+<tr class="memitem:a8dfdcb6f69fdebfeb6802722d14bf527" id="r_a8dfdcb6f69fdebfeb6802722d14bf527"><td class="memItemLeft">TaskHandle_t&#160;</td><td class="memItemRight"><a class="el" href="#a8dfdcb6f69fdebfeb6802722d14bf527">Pruebas_task_handle</a> = NULL</td></tr>
+<tr class="memdesc:a8dfdcb6f69fdebfeb6802722d14bf527"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle para la tarea FreeRTOS de gestión de temporización y avisos de pruebas.  <br /></td></tr>
+<tr class="memitem:ac93295ed004e7d96670532702b01e92e" id="r_ac93295ed004e7d96670532702b01e92e"><td class="memItemLeft">float&#160;</td><td class="memItemRight"><a class="el" href="#ac93295ed004e7d96670532702b01e92e">modulo_ms2</a> = 0</td></tr>
+<tr class="memdesc:ac93295ed004e7d96670532702b01e92e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Módulo instantáneo de la aceleración triaxial ($m/s^2$).  <br /></td></tr>
+<tr class="memitem:a04a123346642d6738dd1e675cbb0a082" id="r_a04a123346642d6738dd1e675cbb0a082"><td class="memItemLeft">float&#160;</td><td class="memItemRight"><a class="el" href="#a04a123346642d6738dd1e675cbb0a082">rms_temblor</a> = 0.0f</td></tr>
+<tr class="memdesc:a04a123346642d6738dd1e675cbb0a082"><td class="mdescLeft">&#160;</td><td class="mdescRight">Valor RMS de aceleración filtrada en el bloque actual ($m/s^2$).  <br /></td></tr>
+<tr class="memitem:a9f758f16adc24a3c51035ece497b1e76" id="r_a9f758f16adc24a3c51035ece497b1e76"><td class="memItemLeft">float&#160;</td><td class="memItemRight"><a class="el" href="#a9f758f16adc24a3c51035ece497b1e76">frecuencia_dominante</a> = 0.0f</td></tr>
+<tr class="memdesc:a9f758f16adc24a3c51035ece497b1e76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frecuencia de mayor magnitud detectada en el bloque actual (Hz).  <br /></td></tr>
+<tr class="memitem:a8b01355d1d9939ac380531a7fbf0dcfe" id="r_a8b01355d1d9939ac380531a7fbf0dcfe"><td class="memItemLeft">volatile <a class="el" href="#aca7d0d43e577e0bc70ae40044f73d6dc">estado_prueba_t</a>&#160;</td><td class="memItemRight"><a class="el" href="#a8b01355d1d9939ac380531a7fbf0dcfe">estado_actual</a> = <a class="el" href="#aca7d0d43e577e0bc70ae40044f73d6dca2ab24b92f6d003212e1dd2c4676469e7">MODO_REPOSO</a></td></tr>
+<tr class="memdesc:a8b01355d1d9939ac380531a7fbf0dcfe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Estado actual del flujo de pruebas.  <br /></td></tr>
+</table>
+<a name="doc-define-members" id="doc-define-members"></a><h2 id="header-doc-define-members" class="groupheader">Documentación de «define»</h2>
+<a id="a28c09654e548772ed5e9207c40f2ea0c" name="a28c09654e548772ed5e9207c40f2ea0c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a28c09654e548772ed5e9207c40f2ea0c">&#9670;&#160;</a></span>BIN_ENVIO_MAX</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define BIN_ENVIO_MAX&#160;&#160;&#160;32</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Bin máximo de envío FFT (bin 32 correspondiente a 25.0 Hz). </p>
+
+<p class="definition">Definición en la línea <a class="el" href="_proyecto___integrador_8c_source.html#l00075">75</a> del archivo <a class="el" href="_proyecto___integrador_8c_source.html">Proyecto_Integrador.c</a>.</p>
+
+</div>
+</div>
+<a id="a6b20d41d6252e9871430c242cb1a56e7" name="a6b20d41d6252e9871430c242cb1a56e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b20d41d6252e9871430c242cb1a56e7">&#9670;&#160;</a></span>BUFFER_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define BUFFER_SIZE&#160;&#160;&#160;128</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Cantidad de muestras del buffer para el procesamiento FFT (Potencia de 2). </p>
+
+<p class="definition">Definición en la línea <a class="el" href="_proyecto___integrador_8c_source.html#l00060">60</a> del archivo <a class="el" href="_proyecto___integrador_8c_source.html">Proyecto_Integrador.c</a>.</p>
+
+</div>
+</div>
+<a id="a3df1b4cad09974bfc68858fad7cdc054" name="a3df1b4cad09974bfc68858fad7cdc054"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3df1b4cad09974bfc68858fad7cdc054">&#9670;&#160;</a></span>CONFIG_BLINK_PERIOD</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CONFIG_BLINK_PERIOD&#160;&#160;&#160;500</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Período de parpadeo de configuración por defecto (ms). </p>
+
+<p class="definition">Definición en la línea <a class="el" href="_proyecto___integrador_8c_source.html#l00057">57</a> del archivo <a class="el" href="_proyecto___integrador_8c_source.html">Proyecto_Integrador.c</a>.</p>
+
+</div>
+</div>
+<a id="a5358fe5e90461a722dc652a2e3d993e4" name="a5358fe5e90461a722dc652a2e3d993e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5358fe5e90461a722dc652a2e3d993e4">&#9670;&#160;</a></span>CONFIG_BLINK_PERIOD_Adquisicion_US</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CONFIG_BLINK_PERIOD_Adquisicion_US&#160;&#160;&#160;10000</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Período de muestreo en microsegundos (10000 us = 10 ms -&gt; 100 Hz). </p>
+
+<p class="definition">Definición en la línea <a class="el" href="_proyecto___integrador_8c_source.html#l00066">66</a> del archivo <a class="el" href="_proyecto___integrador_8c_source.html">Proyecto_Integrador.c</a>.</p>
+
+<p class="reference">Referenciado por <a class="el" href="_proyecto___integrador_8c_source.html#l00445">app_main()</a>.</p>
+
+</div>
+</div>
+<a id="ad6eafdce98e6736dc6ea562414bc7535" name="ad6eafdce98e6736dc6ea562414bc7535"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad6eafdce98e6736dc6ea562414bc7535">&#9670;&#160;</a></span>GRAVEDAD_MS2</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define GRAVEDAD_MS2&#160;&#160;&#160;9.80665f</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Valor constante de aceleración de la gravedad ($m/s^2$). </p>
+
+<p class="definition">Definición en la línea <a class="el" href="_proyecto___integrador_8c_source.html#l00069">69</a> del archivo <a class="el" href="_proyecto___integrador_8c_source.html">Proyecto_Integrador.c</a>.</p>
+
+</div>
+</div>
+<a id="ac09ef5ccee9d31400c53d5a2521984ca" name="ac09ef5ccee9d31400c53d5a2521984ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac09ef5ccee9d31400c53d5a2521984ca">&#9670;&#160;</a></span>PAUSA_ENVIO_MS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PAUSA_ENVIO_MS&#160;&#160;&#160;25</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Pausa entre transmisiones de cadenas de texto por UART y BLE (ms). </p>
+
+<p class="definition">Definición en la línea <a class="el" href="_proyecto___integrador_8c_source.html#l00078">78</a> del archivo <a class="el" href="_proyecto___integrador_8c_source.html">Proyecto_Integrador.c</a>.</p>
+
+</div>
+</div>
+<a id="a7603ae0d99a6ca049bf7df3e6e5317b4" name="a7603ae0d99a6ca049bf7df3e6e5317b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7603ae0d99a6ca049bf7df3e6e5317b4">&#9670;&#160;</a></span>SAMPLE_FREC</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SAMPLE_FREC&#160;&#160;&#160;100</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Frecuencia de muestreo de la señal de aceleración (Hz). </p>
+
+<p class="definition">Definición en la línea <a class="el" href="_proyecto___integrador_8c_source.html#l00063">63</a> del archivo <a class="el" href="_proyecto___integrador_8c_source.html">Proyecto_Integrador.c</a>.</p>
+
+<p class="reference">Referenciado por <a class="el" href="_proyecto___integrador_8c_source.html#l00445">app_main()</a>.</p>
+
+</div>
+</div>
+<a id="aad3347834aa9050def92c866bc33a699" name="aad3347834aa9050def92c866bc33a699"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad3347834aa9050def92c866bc33a699">&#9670;&#160;</a></span>TIEMPO_PRUEBA_ESTATICA_MS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TIEMPO_PRUEBA_ESTATICA_MS&#160;&#160;&#160;10000</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Duración total de la prueba estática en milisegundos (10 segundos). </p>
+
+<p class="definition">Definición en la línea <a class="el" href="_proyecto___integrador_8c_source.html#l00072">72</a> del archivo <a class="el" href="_proyecto___integrador_8c_source.html">Proyecto_Integrador.c</a>.</p>
+
+</div>
+</div>
+<a id="a57070ee080a5f899b711059c81633385" name="a57070ee080a5f899b711059c81633385"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57070ee080a5f899b711059c81633385">&#9670;&#160;</a></span>UMBRAL_RMS_TEMBLOR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define UMBRAL_RMS_TEMBLOR&#160;&#160;&#160;0.30f</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Umbral RMS mínimo de aceleración para clasificar la presencia de temblor ($m/s^2$). </p>
+
+<p class="definition">Definición en la línea <a class="el" href="_proyecto___integrador_8c_source.html#l00081">81</a> del archivo <a class="el" href="_proyecto___integrador_8c_source.html">Proyecto_Integrador.c</a>.</p>
+
+</div>
+</div>
+<a name="doc-enum-members" id="doc-enum-members"></a><h2 id="header-doc-enum-members" class="groupheader">Documentación de enumeraciones</h2>
+<a id="aca7d0d43e577e0bc70ae40044f73d6dc" name="aca7d0d43e577e0bc70ae40044f73d6dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aca7d0d43e577e0bc70ae40044f73d6dc">&#9670;&#160;</a></span>estado_prueba_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="#aca7d0d43e577e0bc70ae40044f73d6dc">estado_prueba_t</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Enumeración de los estados posibles en la secuencia de evaluación. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Valores de enumeraciones</th></tr><tr><td class="fieldname"><a id="aca7d0d43e577e0bc70ae40044f73d6dca2ab24b92f6d003212e1dd2c4676469e7" name="aca7d0d43e577e0bc70ae40044f73d6dca2ab24b92f6d003212e1dd2c4676469e7"></a>MODO_REPOSO&#160;</td><td class="fielddoc"><p>Sistema en espera de inicio de prueba </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aca7d0d43e577e0bc70ae40044f73d6dcad6502c2482e19542103f9216f68d95b5" name="aca7d0d43e577e0bc70ae40044f73d6dcad6502c2482e19542103f9216f68d95b5"></a>MODO_ESTATICO&#160;</td><td class="fielddoc"><p>Prueba de temblor postural/estático activa </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aca7d0d43e577e0bc70ae40044f73d6dca66c21cf0c64963c23fb31e26109c85d6" name="aca7d0d43e577e0bc70ae40044f73d6dca66c21cf0c64963c23fb31e26109c85d6"></a>MODO_DINAMICO&#160;</td><td class="fielddoc"><p>Prueba de temblor cinético/dinámico activa </p>
+</td></tr>
+</table>
+
+<p class="definition">Definición en la línea <a class="el" href="_proyecto___integrador_8c_source.html#l00089">89</a> del archivo <a class="el" href="_proyecto___integrador_8c_source.html">Proyecto_Integrador.c</a>.</p>
+
+</div>
+</div>
+<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Documentación de funciones</h2>
+<a id="a630544a7f0a2cc40d8a7fefab7e2fe70" name="a630544a7f0a2cc40d8a7fefab7e2fe70"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a630544a7f0a2cc40d8a7fefab7e2fe70">&#9670;&#160;</a></span>app_main()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void app_main </td>
+          <td>(</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Función principal del programa. Inicializa periféricos, filtros, tareas FreeRTOS y temporizador de adquisición. </p>
+
+<p class="definition">Definición en la línea <a class="el" href="_proyecto___integrador_8c_source.html#l00445">445</a> del archivo <a class="el" href="_proyecto___integrador_8c_source.html">Proyecto_Integrador.c</a>.</p>
+
+<p class="reference">Hace referencia a <a class="el" href="_proyecto___integrador_8c_source.html#l00096">Adquisicion_task_handle</a>, <a class="el" href="ble__mcu_8c_source.html#l00452">BleInit()</a>, <a class="el" href="buzzer_8c_source.html#l00043">BuzzerInit()</a>, <a class="el" href="_proyecto___integrador_8c_source.html#l00066">CONFIG_BLINK_PERIOD_Adquisicion_US</a>, <a class="el" href="_proyecto___integrador_8c_source.html#l00157">FuncTimerA()</a>, <a class="el" href="gpio__mcu_8h_source.html#l00072">GPIO_20</a>, <a class="el" href="led_8c_source.html#l00031">LedsInit()</a>, <a class="el" href="_proyecto___integrador_8c_source.html#l00099">Procesamiento_task_handle</a>, <a class="el" href="_proyecto___integrador_8c_source.html#l00102">Pruebas_task_handle</a>, <a class="el" href="_proyecto___integrador_8c_source.html#l00063">SAMPLE_FREC</a>, <a class="el" href="switch_8h_source.html#l00032">SWITCH_1</a>, <a class="el" href="switch_8h_source.html#l00033">SWITCH_2</a>, <a class="el" href="switch_8c_source.html#l00047">SwitchActivInt()</a>, <a class="el" href="switch_8c_source.html#l00029">SwitchesInit()</a>, <a class="el" href="ble__hid__mcu_8c_source.html#l00031">TAG</a>, <a class="el" href="_proyecto___integrador_8c_source.html#l00164">Tecla1_ISR()</a>, <a class="el" href="_proyecto___integrador_8c_source.html#l00176">Tecla2_ISR()</a>, <a class="el" href="timer__mcu_8h_source.html#l00040">timer_config_t::timer</a>, <a class="el" href="timer__mcu_8h_source.html#l00032">TIMER_A</a>, <a class="el" href="timer__mcu_8c_source.html#l00067">TimerInit()</a>, <a class="el" href="timer__mcu_8c_source.html#l00116">TimerStart()</a>, <a class="el" href="uart__mcu_8h_source.html#l00032">UART_PC</a> y <a class="el" href="uart__mcu_8c_source.html#l00107">UartInit()</a>.</p>
+
+</div>
+</div>
+<a id="afaccfed84cd1498a05ea04a65f1209b1" name="afaccfed84cd1498a05ea04a65f1209b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afaccfed84cd1498a05ea04a65f1209b1">&#9670;&#160;</a></span>FuncTimerA()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void FuncTimerA </td>
+          <td>(</td>
+          <td class="paramtype">void *</td>          <td class="paramname"><span class="paramname"><em>param</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Callback de temporizador ejecutado por la interrupción de Timer A. </p>
+<dl class="params"><dt>Parámetros</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">param</td><td>Puntero genérico a parámetros de la función (no utilizado). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definición en la línea <a class="el" href="_proyecto___integrador_8c_source.html#l00157">157</a> del archivo <a class="el" href="_proyecto___integrador_8c_source.html">Proyecto_Integrador.c</a>.</p>
+
+<p class="reference">Hace referencia a <a class="el" href="_proyecto___integrador_8c_source.html#l00096">Adquisicion_task_handle</a>.</p>
+
+<p class="reference">Referenciado por <a class="el" href="_proyecto___integrador_8c_source.html#l00445">app_main()</a>.</p>
+
+</div>
+</div>
+<a id="a05a3af150289304855dd143f450f9645" name="a05a3af150289304855dd143f450f9645"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a05a3af150289304855dd143f450f9645">&#9670;&#160;</a></span>Tecla1_ISR()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Tecla1_ISR </td>
+          <td>(</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Interrupción por hardware al presionar la Tecla 1 (Selecciona e Inicia Prueba Estática). </p>
+
+<p class="definition">Definición en la línea <a class="el" href="_proyecto___integrador_8c_source.html#l00164">164</a> del archivo <a class="el" href="_proyecto___integrador_8c_source.html">Proyecto_Integrador.c</a>.</p>
+
+<p class="reference">Hace referencia a <a class="el" href="_proyecto___integrador_8c_source.html#l00138">estado_actual</a>, <a class="el" href="_proyecto___integrador_8c_source.html#l00091">MODO_ESTATICO</a> y <a class="el" href="_proyecto___integrador_8c_source.html#l00102">Pruebas_task_handle</a>.</p>
+
+<p class="reference">Referenciado por <a class="el" href="_proyecto___integrador_8c_source.html#l00445">app_main()</a>.</p>
+
+</div>
+</div>
+<a id="ab2fbce6622fb6b38694b94c3355eec5f" name="ab2fbce6622fb6b38694b94c3355eec5f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2fbce6622fb6b38694b94c3355eec5f">&#9670;&#160;</a></span>Tecla2_ISR()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Tecla2_ISR </td>
+          <td>(</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Interrupción por hardware al presionar la Tecla 2 (Selecciona e Inicia Prueba Dinámica). </p>
+
+<p class="definition">Definición en la línea <a class="el" href="_proyecto___integrador_8c_source.html#l00176">176</a> del archivo <a class="el" href="_proyecto___integrador_8c_source.html">Proyecto_Integrador.c</a>.</p>
+
+<p class="reference">Hace referencia a <a class="el" href="_proyecto___integrador_8c_source.html#l00138">estado_actual</a>, <a class="el" href="_proyecto___integrador_8c_source.html#l00092">MODO_DINAMICO</a> y <a class="el" href="_proyecto___integrador_8c_source.html#l00102">Pruebas_task_handle</a>.</p>
+
+<p class="reference">Referenciado por <a class="el" href="_proyecto___integrador_8c_source.html#l00445">app_main()</a>.</p>
+
+</div>
+</div>
+<a name="doc-var-members" id="doc-var-members"></a><h2 id="header-doc-var-members" class="groupheader">Documentación de variables</h2>
+<a id="ad97bee9a35b98e0b6d3ba4a11cc21725" name="ad97bee9a35b98e0b6d3ba4a11cc21725"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad97bee9a35b98e0b6d3ba4a11cc21725">&#9670;&#160;</a></span>Adquisicion_task_handle</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TaskHandle_t Adquisicion_task_handle = NULL</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Handle para la tarea FreeRTOS de adquisición de datos. </p>
+
+<p class="definition">Definición en la línea <a class="el" href="_proyecto___integrador_8c_source.html#l00096">96</a> del archivo <a class="el" href="_proyecto___integrador_8c_source.html">Proyecto_Integrador.c</a>.</p>
+
+<p class="reference">Referenciado por <a class="el" href="_proyecto___integrador_8c_source.html#l00445">app_main()</a> y <a class="el" href="_proyecto___integrador_8c_source.html#l00157">FuncTimerA()</a>.</p>
+
+</div>
+</div>
+<a id="a8b01355d1d9939ac380531a7fbf0dcfe" name="a8b01355d1d9939ac380531a7fbf0dcfe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b01355d1d9939ac380531a7fbf0dcfe">&#9670;&#160;</a></span>estado_actual</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile <a class="el" href="#aca7d0d43e577e0bc70ae40044f73d6dc">estado_prueba_t</a> estado_actual = <a class="el" href="#aca7d0d43e577e0bc70ae40044f73d6dca2ab24b92f6d003212e1dd2c4676469e7">MODO_REPOSO</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Estado actual del flujo de pruebas. </p>
+
+<p class="definition">Definición en la línea <a class="el" href="_proyecto___integrador_8c_source.html#l00138">138</a> del archivo <a class="el" href="_proyecto___integrador_8c_source.html">Proyecto_Integrador.c</a>.</p>
+
+<p class="reference">Referenciado por <a class="el" href="_proyecto___integrador_8c_source.html#l00164">Tecla1_ISR()</a> y <a class="el" href="_proyecto___integrador_8c_source.html#l00176">Tecla2_ISR()</a>.</p>
+
+</div>
+</div>
+<a id="a9f758f16adc24a3c51035ece497b1e76" name="a9f758f16adc24a3c51035ece497b1e76"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f758f16adc24a3c51035ece497b1e76">&#9670;&#160;</a></span>frecuencia_dominante</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float frecuencia_dominante = 0.0f</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Frecuencia de mayor magnitud detectada en el bloque actual (Hz). </p>
+
+<p class="definition">Definición en la línea <a class="el" href="_proyecto___integrador_8c_source.html#l00134">134</a> del archivo <a class="el" href="_proyecto___integrador_8c_source.html">Proyecto_Integrador.c</a>.</p>
+
+</div>
+</div>
+<a id="ac93295ed004e7d96670532702b01e92e" name="ac93295ed004e7d96670532702b01e92e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac93295ed004e7d96670532702b01e92e">&#9670;&#160;</a></span>modulo_ms2</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float modulo_ms2 = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Módulo instantáneo de la aceleración triaxial ($m/s^2$). </p>
+
+<p class="definition">Definición en la línea <a class="el" href="_proyecto___integrador_8c_source.html#l00105">105</a> del archivo <a class="el" href="_proyecto___integrador_8c_source.html">Proyecto_Integrador.c</a>.</p>
+
+</div>
+</div>
+<a id="a17b236c52589445e8c28ae58c6699a0f" name="a17b236c52589445e8c28ae58c6699a0f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a17b236c52589445e8c28ae58c6699a0f">&#9670;&#160;</a></span>Procesamiento_task_handle</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TaskHandle_t Procesamiento_task_handle = NULL</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Handle para la tarea FreeRTOS de procesamiento digital de señales. </p>
+
+<p class="definition">Definición en la línea <a class="el" href="_proyecto___integrador_8c_source.html#l00099">99</a> del archivo <a class="el" href="_proyecto___integrador_8c_source.html">Proyecto_Integrador.c</a>.</p>
+
+<p class="reference">Referenciado por <a class="el" href="_proyecto___integrador_8c_source.html#l00445">app_main()</a>.</p>
+
+</div>
+</div>
+<a id="a8dfdcb6f69fdebfeb6802722d14bf527" name="a8dfdcb6f69fdebfeb6802722d14bf527"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8dfdcb6f69fdebfeb6802722d14bf527">&#9670;&#160;</a></span>Pruebas_task_handle</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TaskHandle_t Pruebas_task_handle = NULL</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Handle para la tarea FreeRTOS de gestión de temporización y avisos de pruebas. </p>
+
+<p class="definition">Definición en la línea <a class="el" href="_proyecto___integrador_8c_source.html#l00102">102</a> del archivo <a class="el" href="_proyecto___integrador_8c_source.html">Proyecto_Integrador.c</a>.</p>
+
+<p class="reference">Referenciado por <a class="el" href="_proyecto___integrador_8c_source.html#l00445">app_main()</a>, <a class="el" href="_proyecto___integrador_8c_source.html#l00164">Tecla1_ISR()</a> y <a class="el" href="_proyecto___integrador_8c_source.html#l00176">Tecla2_ISR()</a>.</p>
+
+</div>
+</div>
+<a id="a04a123346642d6738dd1e675cbb0a082" name="a04a123346642d6738dd1e675cbb0a082"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a04a123346642d6738dd1e675cbb0a082">&#9670;&#160;</a></span>rms_temblor</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float rms_temblor = 0.0f</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Valor RMS de aceleración filtrada en el bloque actual ($m/s^2$). </p>
+
+<p class="definition">Definición en la línea <a class="el" href="_proyecto___integrador_8c_source.html#l00131">131</a> del archivo <a class="el" href="_proyecto___integrador_8c_source.html">Proyecto_Integrador.c</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<div id="page-nav" class="page-nav-panel">
+<div id="page-nav-resize-handle"></div>
+<div id="page-nav-tree">
+<div id="page-nav-contents">
+</div><!-- page-nav-contents -->
+</div><!-- page-nav-tree -->
+</div><!-- page-nav -->
+</div><!-- container -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a href="dir_501ef17365116d3ccc0d027267a6923c.html">EProgramable_FIUNER_Sapetti_2C_2026</a></li><li class="navelem"><a href="dir_162f21f3f95f1ca99aae6c6591bd8125.html">firmware</a></li><li class="navelem"><a href="dir_bf3d0ba67717f4330ab3bc894f51c6ff.html">projects</a></li><li class="navelem"><a href="dir_a9ed418980432b0fe7dc7ab94ffdea5c.html">Proyecto_Integrador</a></li><li class="navelem"><a href="dir_f8a3e8330d34aac40e77d98a533fbee9.html">main</a></li><li class="navelem"><a href="_proyecto___integrador_8c.html">Proyecto_Integrador.c</a></li>
+    <li class="footer">Generado por <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.17.0 </li>
+  </ul>
+</div>
+</body>
+</html>

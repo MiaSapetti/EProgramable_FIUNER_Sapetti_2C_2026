@@ -1,0 +1,13 @@
+var searchData=
+[
+  ['el_20foco_20esta_20en_20la_20frecuencia_20dominante_0',['Además de el pico de frecuencia máxima se observan otros picos secundarios de armonicos de la señal, pero en este caso el foco esta en la frecuencia dominante.',['../dir_a9ed418980432b0fe7dc7ab94ffdea5c.html#autotoc_md13',1,'']]],
+  ['el_20pico_20de_20frecuencia_20máxima_20se_20observan_20otros_20picos_20secundarios_20de_20armonicos_20de_20la_20señal_20pero_20en_20este_20caso_20el_20foco_20esta_20en_20la_20frecuencia_20dominante_1',['Además de el pico de frecuencia máxima se observan otros picos secundarios de armonicos de la señal, pero en este caso el foco esta en la frecuencia dominante.',['../dir_a9ed418980432b0fe7dc7ab94ffdea5c.html#autotoc_md13',1,'']]],
+  ['en_20bloques_2',['Diagrama en Bloques',['../dir_a9ed418980432b0fe7dc7ab94ffdea5c.html#autotoc_md4',1,'']]],
+  ['en_20este_20caso_20el_20foco_20esta_20en_20la_20frecuencia_20dominante_3',['Además de el pico de frecuencia máxima se observan otros picos secundarios de armonicos de la señal, pero en este caso el foco esta en la frecuencia dominante.',['../dir_a9ed418980432b0fe7dc7ab94ffdea5c.html#autotoc_md13',1,'']]],
+  ['en_20la_20frecuencia_20dominante_4',['Además de el pico de frecuencia máxima se observan otros picos secundarios de armonicos de la señal, pero en este caso el foco esta en la frecuencia dominante.',['../dir_a9ed418980432b0fe7dc7ab94ffdea5c.html#autotoc_md13',1,'']]],
+  ['esta_20en_20la_20frecuencia_20dominante_5',['Además de el pico de frecuencia máxima se observan otros picos secundarios de armonicos de la señal, pero en este caso el foco esta en la frecuencia dominante.',['../dir_a9ed418980432b0fe7dc7ab94ffdea5c.html#autotoc_md13',1,'']]],
+  ['este_20caso_20el_20foco_20esta_20en_20la_20frecuencia_20dominante_6',['Además de el pico de frecuencia máxima se observan otros picos secundarios de armonicos de la señal, pero en este caso el foco esta en la frecuencia dominante.',['../dir_a9ed418980432b0fe7dc7ab94ffdea5c.html#autotoc_md13',1,'']]],
+  ['estructura_20del_20proyecto_7',['📁 Estructura del Proyecto',['../dir_a9ed418980432b0fe7dc7ab94ffdea5c.html#autotoc_md20',1,'']]],
+  ['evaluador_20de_20temblor_20neuromuscular_20y_20apraxia_8',['Evaluador de Temblor Neuromuscular y Apraxia',['../index.html',1,'Evaluador de Temblor Neuromuscular y Apraxia'],['../dir_a9ed418980432b0fe7dc7ab94ffdea5c.html#autotoc_md0',1,'Evaluador de Temblor Neuromuscular y Apraxia']]],
+  ['experimental_20y_20pruebas_20de_20funcionamiento_9',['📊 Validación experimental y Pruebas de Funcionamiento',['../dir_a9ed418980432b0fe7dc7ab94ffdea5c.html#autotoc_md14',1,'']]]
+];
