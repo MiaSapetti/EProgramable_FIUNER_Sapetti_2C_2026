@@ -21,7 +21,7 @@ El dispositivo evalúa la severidad y frecuencia del temblor mediante el cálcul
 
 ## Diagrama en Bloques
 
-![Diagrama en Bloques](imagenes/Diagrama en bloques.png)
+![Diagrama en Bloques](imagenes/Diagrama_en_bloques.png)
 
 ---
 
@@ -62,11 +62,13 @@ El dispositivo evalúa la severidad y frecuencia del temblor mediante el cálcul
 
 Al finalizar cada prueba (estática o dinámica), el dispositivo envía el paquete de datos consolidado a través del perfil Bluetooth SPP. La aplicación móvil procesa las tramas transmitidas (`*GC*`, `*GX...Y...*`, `*D...*` y `*S...*`) para desplegar la gráfica del espectro promedio acumulado y los parámetros diagnósticos finales.
 
-![Resultado final en la App Móvil BLE](imagenes/Figura 1.jpeg)
+![Resultado final en la App Móvil BLE](imagenes/Figura1.jpeg)
+
 *Figura 1: Pantalla de la aplicación móvil mostrando el espectro de magnitudes promediado, la Frecuencia Dominante o de pico ($Hz$) y el valor RMS ($m/s^2$) de la ultima medición realizada, la Frecuencia Dominante ($Hz$) promediada a lo largo de toda la prueba (promedio de picos mayores) y el valor RMS ($m/s^2$) promediado (en ese orden).*
 
 En este caso la frecuencia máxima de la ultima medición coincide con la frecuencia máxima de la prueba, aun asi el indicador para la evaluacion clinica es la frecuencia promediada.
 Además de el pico de frecuencia máxima se observan otros picos secundarios de armonicos de la señal, pero en este caso el foco esta en la frecuencia dominante.
+
 ---
 
 ## 📊 Validación experimental y Pruebas de Funcionamiento
@@ -76,32 +78,39 @@ Para validar la precisión del sistema en la estimación de la **Frecuencia Domi
 ### 1. Validación de Frecuencia Dominante
 Se inyectaron señales senoidales de frecuencia conocida dentro del rango de temblor ($1\text{ Hz} - 15\text{ Hz}$). En la interfaz gráfica y en el plotter serie se verificó la coincidencia exacta entre la frecuencia introducida y el pico máximo detectado por la FFT.
 
-![Validación de Espectro y Frecuencia Dominante](imagenes/Figura 2.jpeg)
+![Generador con senoidal utilizada](imagenes/Figura2.jpeg)
+
 *Figura 2: Generador con senoidal utilizada.*
 
-![Validación de Espectro y Frecuencia Dominante](imagenes/Figura 3.jpeg)
+![Salida en la terminal del espectro](imagenes/Figura3.jpeg)
+
 *Figura 3: Salida en la terminal del espectro de magnitud de la FFT mostrando el valor de frecuencia dominante coincidente con la frecuencia del generador.*
 
-![Validación de Espectro y Frecuencia Dominante](imagenes/Figura 4.jpeg)
+![Conexión de la placa](imagenes/Figura4.jpeg)
+
 *Figura 4: Conexión de la placa.*
 
 ### 2. Validación de Amplitud y RMS
 Se comparó el cálculo del RMS del código contra el valor teórico ($V_{RMS} = \frac{V_{pico}}{\sqrt{2}}$) e instrumental del generador, confirmando que tras el filtrado IIR la severidad estimada refleja fielmente la amplitud real de la oscilación.
 
-![Respuesta en tiempo real y lectura de RMS](imagenes/Figura 5.jpeg)
+![Generador con senoidal utilizada RMS](imagenes/Figura5.jpeg)
+
 *Figura 5: Generador con senoidal utilizada.*
 
-![Respuesta en tiempo real y lectura de RMS](imagenes/Figura 6.jpeg)
+![Salida en la terminal RMS](imagenes/Figura6.jpeg)
+
 *Figura 6: Salida en la terminal del espectro de magnitud de la FFT mostrando el valor de frecuencia dominante, el RMS filtrado y el RMS sin filtrar.*
 
-![Respuesta en tiempo real y lectura de RMS](imagenes/Figura 7.jpeg)
+![Conexión de la placa](imagenes/Figura7.jpeg)
+
 *Figura 7: Conexión de la placa.*
 
 ---
 ### 3. Video de Funcionamiento
 Se observa la realización de la prueba estática, el procesamiento de las tramas en la aplicación movil, el envio de resultados finales a la terminal de la PC y la visualización del espectro y valores finales en la aplicación y la PC.
 
-![Video de Funcionamiento](imagenes/Video_Funcionamiento.mp4)
+<video src="https://github.com/MiaSapetti/EProgramable_FIUNER_Sapetti_2C_2026/raw/main/firmware/projects/Proyecto_Integrador/imagenes/Video_Funcionamiento.mp4" controls="controls" style="max-width: 730px;">
+</video>
 
 ---
 ## 📁 Estructura del Proyecto
