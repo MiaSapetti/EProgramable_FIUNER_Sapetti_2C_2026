@@ -112,6 +112,8 @@ Se observa la realización de la prueba estática, el procesamiento de las trama
 <video src="https://github.com/MiaSapetti/EProgramable_FIUNER_Sapetti_2C_2026/raw/main/firmware/projects/Proyecto_Integrador/imagenes/Video_Funcionamiento.mp4" controls="controls" style="max-width: 730px;">
 </video>
 
+*(Si el reproductor no carga en tu navegador, puedes [descargar o ver el video directamente aquí](imagenes/Video_Funcionamiento.mp4)).*
+
 ---
 ## 📁 Estructura del Proyecto
 
